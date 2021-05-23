@@ -17,6 +17,7 @@ struct vertex {
     double heuristic;
 };
 
+
 vertex *vertices;
 
 double **edgeWeight;

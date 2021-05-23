@@ -30,7 +30,6 @@ class Data : public::testing::Test {
         void writeBadData();
         void writeCompletePath();
         void writeInCompletePath();
-        void writeDuplicateEdge();
 };
 
 // Function writes the vertices into a data file only.
@@ -40,7 +39,7 @@ void Data::writeVertices(const char* fileName){
     cout << "Opened File: " << fileName << endl;
     srand(time(NULL));
 
-    no_of_vertices = rand() % 10 + 2;
+    no_of_vertices = rand() % 5 + 2;
     no_of_edges = no_of_vertices-1;
     
     // Writes: number_of_vertices \t
@@ -85,23 +84,6 @@ void Data::writeBadData(){
     }
     MyFile << 1 << "\t" << no_of_vertices << endl;
     MyFile.close();
-}
-
-void Data::writeDuplicateEdge(){
-   for(int i = 1; i < no_of_edges; i++){
-        MyFile << i << "\t" << i+1 << "\t" << 1 << endl; 
-    }
-    MyFile << no_of_edges << "\t" << no_of_edges-1 << "\t" << 100 << endl; 
-    MyFile << 1 << "\t" << no_of_edges << endl;
-    MyFile.close();
-}
-
-TEST_F(Data, DuplicateEdge){
-   const char* file = "DuplicateEdge.txt";
-   writeVertices(file);
-   writeDuplicateEdge();
-   simulation->openFile(file);
-   ASSERT_EQ(0, simulation->readFile());
 }
 
 TEST_F(Data, InCompletedPath){

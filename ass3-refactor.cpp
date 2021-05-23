@@ -101,7 +101,7 @@ int Simulation::readFile(){
         if (edgeWeight[row][col] < edgeWeight[col][row]){
             edgeWeight[col][row] = edgeWeight[row][col];
         } else {
-            edgeWeight[row][col] = edgeWeight[col][row];
+            edgeWeight[row][col] = edgeWeight[row][col];
         }
 
     }
@@ -236,7 +236,7 @@ int Simulation::run(){
     int nPath2Vertices;
     int *path2;
     */
-    /*
+   
     path2 = new int[nVertices];
     nPathEdges = nPathVertices - 1;
     bestLength = HUGE_VAL;
@@ -272,7 +272,7 @@ int Simulation::run(){
         }
         cout << endl;
     }
-    */
+
 
     fin.close();
     delete[] vertices;
@@ -403,3 +403,22 @@ void Simulation::siftDown (int *heap, int heapSize, int i){
     siftDown (heap, heapSize, c);
     return;
 }
+/*
+vertex[1].length + vertex[1].heuristics = 100
+vertex[2].length + vertex[2].heuristics = 99
+vertex[3].length + vertex[3].heuristics = 98
+vertex[4].length + vertex[4].heuristics = 97
+vertex[5].length + vertex[5].heuristics = 96
+
+heap[1] = 1
+heap[2] = 2
+heap[3] = 3
+heap[4] = 4
+heap[5] = 5
+
+heap[1] = 5
+heap[2] = 4
+heap[3] = 3
+heap[4] = 2 
+heap[5] = 1
+*/
