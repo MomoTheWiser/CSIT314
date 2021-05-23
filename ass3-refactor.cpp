@@ -236,7 +236,7 @@ int Simulation::run(){
     int nPath2Vertices;
     int *path2;
     */
-   
+    /*
     path2 = new int[nVertices];
     nPathEdges = nPathVertices - 1;
     bestLength = HUGE_VAL;
@@ -272,7 +272,7 @@ int Simulation::run(){
         }
         cout << endl;
     }
-
+    */
 
     fin.close();
     delete[] vertices;
