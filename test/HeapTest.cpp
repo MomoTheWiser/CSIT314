@@ -31,19 +31,20 @@ bool HeapTest::check(int heap[]){
 }
 
 TEST_F(HeapTest, subtestOne){
+    
     verticesTest[1].length = 50; verticesTest[1].heuristic = 100;
     verticesTest[2].length = 50; verticesTest[2].heuristic = 49;
     verticesTest[3].length = 50; verticesTest[3].heuristic = 48;
     verticesTest[4].length = 50; verticesTest[4].heuristic = 47;
     verticesTest[5].length = 50; verticesTest[5].heuristic = 46;
 
-    /*
+    
     for(int i=5 ; i >= 1; i--){
         heap[i] = i;
         cout << heap[i] << "\t";
     }
-    */
-
+    
+   
     for(int i=1 ; i <= 5; i++){
         heap[i] = i;
         cout << heap[i] << "\t";
@@ -51,5 +52,6 @@ TEST_F(HeapTest, subtestOne){
 
     cout << endl;
     cout << "Result of check: " << check(heap) << endl;
+    
 }
 

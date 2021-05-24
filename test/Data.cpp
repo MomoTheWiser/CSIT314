@@ -39,7 +39,7 @@ void Data::writeVertices(const char* fileName){
     cout << "Opened File: " << fileName << endl;
     srand(time(NULL));
 
-    no_of_vertices = rand() % 5 + 2;
+    no_of_vertices = rand() % 10 + 2;
     no_of_edges = no_of_vertices-1;
     
     // Writes: number_of_vertices \t

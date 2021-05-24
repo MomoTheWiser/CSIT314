@@ -19,7 +19,7 @@ int Simulation::readFile(){
     // Read into number of vertices and edges from top line of sample data
     fin >> nVertices >> nEdges;
     
-    cout << "nVertices: " << nVertices << "\tnEdges: " << nEdges << endl;                                                     //Debug
+    //cout << "nVertices: " << nVertices << "\tnEdges: " << nEdges << endl;                                                     //Debug
     
     // Output an error if the symbol cannot be read into an int variable
     if(!fin.good()){
@@ -38,7 +38,7 @@ int Simulation::readFile(){
             return 1;
         }
 
-        cout << "id: " << id << "\tvertices[i].xCoordinate: " << vertices[i].xCoordinate << "\tvertices[i].yCoordinate: " << vertices[i].yCoordinate << endl;
+        //cout << "id: " << id << "\tvertices[i].xCoordinate: " << vertices[i].xCoordinate << "\tvertices[i].yCoordinate: " << vertices[i].yCoordinate << endl;
 
         // Compare id_track (previous id) with newly read id
         if (id_tracker < id){
@@ -77,7 +77,7 @@ int Simulation::readFile(){
        
         fin >> row >> col;
         
-        cout << "row: " << row << "\tcol: " << col;                                                             //Debug                                             
+        //cout << "row: " << row << "\tcol: " << col;                                                             //Debug                                             
 
         if(row > nVertices || col > nVertices){
             cerr << "You cannot insert an edge with vertex that doesn't exist." << endl;
@@ -92,7 +92,7 @@ int Simulation::readFile(){
         // Feed in edge weight afterwards
         fin >> edgeWeight[row-1][col-1];
 
-        cout << "\tweight: " << edgeWeight[row-1][col-1]  << endl;                                                                              //Debug
+        //cout << "\tweight: " << edgeWeight[row-1][col-1]  << endl;                                                                              //Debug
         
         row--;
         col--;
@@ -307,7 +307,7 @@ int Simulation::astar(){
         vertices[i].previous = startVertex;
     }
 
-    makeheap(candidate, nCandidates);
+    makeheap(candidate, nCandidates, vertices);
 
     while(candidate[0] != goalVertex && vertices[candidate[0]].length != HUGE_VAL){
         // Remove the best candidate
@@ -315,7 +315,7 @@ int Simulation::astar(){
 
         nCandidates--;
         candidate[0] = candidate[nCandidates];
-        siftDown(candidate, nCandidates,0);
+        siftDown(candidate, nCandidates,0, vertices);
 
         for(int i = 0; i < nCandidates; i++){
             current = vertices[candidate[i]].length;
@@ -325,7 +325,7 @@ int Simulation::astar(){
                 // Update candidates values and restore the heap
                 vertices [candidate [i]].length = update;
                 vertices [candidate [i]].previous = selected;
-                siftUp (candidate, i);
+                siftUp (candidate, i, vertices);
             }
         }
     }
@@ -345,13 +345,13 @@ int Simulation::astar(){
     }
 */
 
-void Simulation::makeheap(int *heap, int heapSize){
+void Simulation::makeheap(int *heap, int heapSize, vertex *verticesIn){
     for (int i = heapSize/2; i >= 0; i--){
-        siftDown(heap, heapSize, i);
+        siftDown(heap, heapSize, i, verticesIn);
     }
 }
 
-void Simulation::siftUp(int *heap, int i){
+void Simulation::siftUp(int *heap, int i, vertex *verticesIn){
 
     int temp;
 
@@ -360,8 +360,8 @@ void Simulation::siftUp(int *heap, int i){
     }
 
     int p = (i-1)/2;
-    double iVal = vertices[heap[i]].length + vertices[heap[i]].heuristic;
-    double pVal = vertices[heap[p]].length + vertices[heap[p]].heuristic;
+    double iVal = verticesIn[heap[i]].length + verticesIn[heap[i]].heuristic;
+    double pVal = verticesIn[heap[p]].length + verticesIn[heap[p]].heuristic;
 
     if(pVal < iVal) {
         return;
@@ -370,11 +370,11 @@ void Simulation::siftUp(int *heap, int i){
     temp = heap[p];
     heap[p] = heap[i];
     heap[i] = temp;
-    siftUp (heap, p);
+    siftUp (heap, p, verticesIn);
     return ;
 }
 
-void Simulation::siftDown (int *heap, int heapSize, int i){
+void Simulation::siftDown (int *heap, int heapSize, int i, vertex *verticesIn){
     int temp, c;
     double iVal, cVal, c1Val ;
     c = 2 * i + 1;
@@ -382,11 +382,11 @@ void Simulation::siftDown (int *heap, int heapSize, int i){
         return;
     }
 
-    iVal = vertices [heap[i]].length + vertices [heap[i]].heuristic ;
-    cVal = vertices [heap[c]].length + vertices [heap[c]].heuristic ;
+    iVal = verticesIn[heap[i]].length + verticesIn[heap[i]].heuristic ;
+    cVal = verticesIn[heap[c]].length + verticesIn[heap[c]].heuristic ;
 
     if (c + 1 < heapSize ) {
-        c1Val = vertices [heap[c + 1]].length + vertices [heap[c + 1]].heuristic;
+        c1Val = verticesIn[heap[c + 1]].length + verticesIn[heap[c + 1]].heuristic;
         if (c1Val < cVal ){
             c++;
             cVal = c1Val;
@@ -400,25 +400,6 @@ void Simulation::siftDown (int *heap, int heapSize, int i){
     temp = heap[c];
     heap[c] = heap[i];
     heap[i] = temp;
-    siftDown (heap, heapSize, c);
+    siftDown (heap, heapSize, c, verticesIn);
     return;
 }
-/*
-vertex[1].length + vertex[1].heuristics = 100
-vertex[2].length + vertex[2].heuristics = 99
-vertex[3].length + vertex[3].heuristics = 98
-vertex[4].length + vertex[4].heuristics = 97
-vertex[5].length + vertex[5].heuristics = 96
-
-heap[1] = 1
-heap[2] = 2
-heap[3] = 3
-heap[4] = 4
-heap[5] = 5
-
-heap[1] = 5
-heap[2] = 4
-heap[3] = 3
-heap[4] = 2 
-heap[5] = 1
-*/
